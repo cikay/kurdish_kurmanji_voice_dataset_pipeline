@@ -1,0 +1,17 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pyyaml = "==6.0.2"
+python-slugify = "==8.0.4"
+trafilatura = "==2.0.0"
+yt-dlp = "==2026.3.17"
+huggingface-hub = "==1.9.0"
+fasttext = "==0.9.3"
+numpy = "==1.26.4"
+
+
+[requires]
+python_version = "3.13"

@@ -1,0 +1,22 @@
+stages:
+  - acquire
+
+acquire:
+  sources:
+    - audio:
+        strategy: youtube_playlist
+        playlist_url: https://www.youtube.com/playlist?list=PLXRqvgEq6VESn7sQzzmaXp_r3H6stjri6
+      text:
+        strategy: web_scrape
+        base_url: https://botantimes.com/
+        endpoint_method: slugify-audio-name
+
+    - audio:
+        strategy: youtube_playlist
+        playlist_url: https://www.youtube.com/playlist?list=PLXRqvgEq6VES-ln2uCIXKzgmWpJ_jLSQV
+      text:
+        strategy: web_scrape
+        base_url: https://botantimes.com/
+        endpoint_method: slugify-audio-name
+
+  output_dir: data/raw
