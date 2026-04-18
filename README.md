@@ -74,7 +74,9 @@ acquire:
       text:
         strategy: web_scrape
         base_url: https://example.com/
-        endpoint_method: slugify-audio-name   # URL = base_url/{slugify(video_title)}/
+        endpoint_method: slugify-audio-name        # primary: URL = base_url/{slugify(video_title)}/
+        endpoint_method_fallbacks:                 # optional: tried in order if primary returns no content
+          - slugify-after-slash                    # for titles like "Author / Column" → base_url/{slugify("Column")}/
 
     - audio:
         strategy: youtube_videos              # One or more explicit URLs
@@ -101,13 +103,16 @@ acquire:
 
 | Strategy | Config keys | Description |
 |----------|------------|-------------|
-| `web_scrape` | `base_url`, `endpoint_method` | Scrapes article text via [trafilatura](https://trafilatura.readthedocs.io) |
+| `web_scrape` | `base_url`, `endpoint_method`, `endpoint_method_fallbacks` (optional) | Scrapes article text via [trafilatura](https://trafilatura.readthedocs.io) |
 
 **Endpoint methods:**
 
-| Method | URL produced |
-|--------|-------------|
-| `slugify-audio-name` | `{base_url}/{slugify(video_title)}/` |
+| Method | URL produced | Notes |
+|--------|-------------|-------|
+| `slugify-audio-name` | `{base_url}/{slugify(video_title)}/` | Default — slugifies the full title |
+| `slugify-after-slash` | `{base_url}/{slugify(part_after_slash)}/` | For titles like `"Author / Column"` — takes text after ` / ` |
+
+**Fallback chain:** `endpoint_method_fallbacks` is an ordered list tried only when the primary returns no content. A fallback whose URL cannot be built (e.g. `slugify-after-slash` with no ` / ` in the title) is silently skipped.
 
 ## Acquire Stage Behaviour
 
@@ -144,8 +149,8 @@ One JSON object per line:
 ### Text files
 Plain UTF-8, reading order matches the audio recording:
 ```
-<article title>
 <author>
+<article title>
 <article body>
 ```
 
