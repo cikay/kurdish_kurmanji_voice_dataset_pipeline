@@ -87,11 +87,11 @@ class AcquireStage:
             audio_strategy = self._build_audio_strategy(source_cfg["audio"])
             text_strategy = self._build_text_strategy(source_cfg["text"])
 
-            source_dir = self.output_dir / audio_strategy.source_id
-            audio_dir = source_dir / "audio"
-            text_dir = source_dir / "text"
-            cache_path = source_dir / "items_cache.json"
-            meta_path = source_dir / "metadata.jsonl"
+            source_id = audio_strategy.source_id
+            audio_dir = self.output_dir / "audio"
+            text_dir = self.output_dir / "text"
+            cache_path = self.output_dir / f"items_cache_{source_id}.json"
+            meta_path = self.output_dir / f"metadata_{source_id}.jsonl"
 
             audio_dir.mkdir(parents=True, exist_ok=True)
             text_dir.mkdir(parents=True, exist_ok=True)
@@ -154,7 +154,7 @@ class AcquireStage:
                     "text_file": f"text/{item_id}.txt",
                     "text_length": len(full_text),
                     "source_url": content.get("source_url", ""),
-                    "source_id": audio_strategy.source_id,
+                    "source_id": source_id,
                 })
                 success += 1
                 time.sleep(1)
@@ -165,5 +165,5 @@ class AcquireStage:
 
             print(
                 f"\n  ✅ {success} saved  ❌ {fail} failed  ⏭️  {skipped} duplicates"
-                f"\n  📁 {source_dir.resolve()}"
+                f"\n  📁 {self.output_dir.resolve()}"
             )

@@ -32,12 +32,11 @@ kurdish_kurmanji_voice_dataset_pipeline/
         web_scrape.py              # Text via trafilatura (slugified URL)
 
 data/
-  raw/
-    <playlist_id>/
-      audio/          *.wav        # 16kHz mono WAV
-      text/           *.txt        # UTF-8 transcription (title + author + body)
-      metadata.jsonl               # One JSON record per audio–text pair
-      items_cache.json             # Cached playlist metadata (speeds up re-runs)
+  acquire/
+    audio/            *.wav                      # 16kHz mono WAV (all sources, flat)
+    text/             *.txt                      # UTF-8 transcription (all sources, flat)
+    metadata_<source_id>.jsonl                   # One JSON record per audio–text pair, per source
+    items_cache_<source_id>.json                 # Cached playlist metadata (speeds up re-runs), per source
 ```
 
 ## Quickstart
@@ -118,12 +117,12 @@ acquire:
 
 For each source the stage:
 
-1. Fetches item metadata (cached to `items_cache.json` after first run)
+1. Fetches item metadata (cached to `items_cache_<source_id>.json` after first run)
 2. Skips items whose `video_id` was already processed by an earlier source (cross-playlist deduplication)
 3. Scrapes the matching article text
 4. Validates language with [fastText](https://fasttext.cc/docs/en/language-identification.html) (`kmr_Latn`, min confidence `0.60`)
 5. Downloads audio via `yt-dlp`, converts to **16kHz mono WAV** via `ffmpeg`
-6. Saves the text file and appends a record to `metadata.jsonl`
+6. Saves the text file and appends a record to `metadata_<source_id>.jsonl`
 
 The fastText model (`facebook/fasttext-language-identification`) is loaded once and cached for the entire run.
 
