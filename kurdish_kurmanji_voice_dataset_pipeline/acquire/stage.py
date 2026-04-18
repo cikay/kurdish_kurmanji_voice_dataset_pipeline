@@ -23,7 +23,7 @@ def _load_fasttext_model() -> fasttext.FastText._FastText:
 
 
 class AcquireStage:
-    FASTTEXT_MIN_PROB = 0.60
+    _DEFAULT_MIN_LANG_CONFIDENCE = 0.60
 
     # Registry: add new strategies here, no other file needs to change
     _AUDIO_REGISTRY: dict[str, type[AudioAcquireStrategy]] = {
@@ -39,6 +39,10 @@ class AcquireStage:
         self.sources: list[dict] = cfg["sources"]
         self.output_dir = Path(cfg["output_dir"])
         self.cookies_file = cookies_file
+        self.language: str = cfg["language"]
+        self.min_lang_confidence: float = cfg.get(
+            "min_lang_confidence", self._DEFAULT_MIN_LANG_CONFIDENCE
+        )
 
     @classmethod
     def _build_audio_strategy(cls, cfg: dict) -> AudioAcquireStrategy:
@@ -115,8 +119,15 @@ class AcquireStage:
                     continue
 
                 lang, prob = self._detect_lang(content["text"])
-                if lang != "kmr_Latn" or prob < self.FASTTEXT_MIN_PROB:
-                    print(f"  ⚠️  Not Kurdish Kurmanji (lang={lang}, p={prob:.2f}), skipping")
+                if lang != self.language:
+                    print(f"  ⚠️  Language mismatch (expected={self.language}, got={lang}), skipping")
+                    fail += 1
+                    continue
+
+                if prob < self.min_lang_confidence:
+                    print(
+                        f"  ⚠️  Language score mismatch (expected={prob:.2f}, got={self.min_lang_confidence:.2f}), skipping"
+                    )
                     fail += 1
                     continue
 

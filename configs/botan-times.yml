@@ -18,5 +18,6 @@ acquire:
         strategy: web_scrape
         base_url: https://botantimes.com/
         endpoint_method: slugify-audio-name
-
+  language: kmr_Latn
+  min_lang_confidence: 0.60
   output_dir: data/raw
