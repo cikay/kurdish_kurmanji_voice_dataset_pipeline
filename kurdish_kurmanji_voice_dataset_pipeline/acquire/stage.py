@@ -23,7 +23,7 @@ def _load_fasttext_model() -> fasttext.FastText._FastText:
 
 
 class AcquireStage:
-    FASTTEXT_MIN_PROB = 0.60
+    _DEFAULT_MIN_LANG_CONFIDENCE = 0.60
 
     # Registry: add new strategies here, no other file needs to change
     _AUDIO_REGISTRY: dict[str, type[AudioAcquireStrategy]] = {
@@ -39,6 +39,10 @@ class AcquireStage:
         self.sources: list[dict] = cfg["sources"]
         self.output_dir = Path(cfg["output_dir"])
         self.cookies_file = cookies_file
+        self.language: str = cfg["language"]
+        self.min_lang_confidence: float = cfg.get(
+            "min_lang_confidence", self._DEFAULT_MIN_LANG_CONFIDENCE
+        )
 
     @classmethod
     def _build_audio_strategy(cls, cfg: dict) -> AudioAcquireStrategy:
@@ -83,11 +87,11 @@ class AcquireStage:
             audio_strategy = self._build_audio_strategy(source_cfg["audio"])
             text_strategy = self._build_text_strategy(source_cfg["text"])
 
-            source_dir = self.output_dir / audio_strategy.source_id
-            audio_dir = source_dir / "audio"
-            text_dir = source_dir / "text"
-            cache_path = source_dir / "items_cache.json"
-            meta_path = source_dir / "metadata.jsonl"
+            source_id = audio_strategy.source_id
+            audio_dir = self.output_dir / "audio"
+            text_dir = self.output_dir / "text"
+            cache_path = self.output_dir / f"items_cache_{source_id}.json"
+            meta_path = self.output_dir / f"metadata_{source_id}.jsonl"
 
             audio_dir.mkdir(parents=True, exist_ok=True)
             text_dir.mkdir(parents=True, exist_ok=True)
@@ -115,8 +119,15 @@ class AcquireStage:
                     continue
 
                 lang, prob = self._detect_lang(content["text"])
-                if lang != "kmr_Latn" or prob < self.FASTTEXT_MIN_PROB:
-                    print(f"  ⚠️  Not Kurdish Kurmanji (lang={lang}, p={prob:.2f}), skipping")
+                if lang != self.language:
+                    print(f"  ⚠️  Language mismatch (expected={self.language}, got={lang}), skipping")
+                    fail += 1
+                    continue
+
+                if prob < self.min_lang_confidence:
+                    print(
+                        f"  ⚠️  Language score mismatch (expected={prob:.2f}, got={self.min_lang_confidence:.2f}), skipping"
+                    )
                     fail += 1
                     continue
 
@@ -143,7 +154,7 @@ class AcquireStage:
                     "text_file": f"text/{item_id}.txt",
                     "text_length": len(full_text),
                     "source_url": content.get("source_url", ""),
-                    "source_id": audio_strategy.source_id,
+                    "source_id": source_id,
                 })
                 success += 1
                 time.sleep(1)
@@ -154,5 +165,5 @@ class AcquireStage:
 
             print(
                 f"\n  ✅ {success} saved  ❌ {fail} failed  ⏭️  {skipped} duplicates"
-                f"\n  📁 {source_dir.resolve()}"
+                f"\n  📁 {self.output_dir.resolve()}"
             )
