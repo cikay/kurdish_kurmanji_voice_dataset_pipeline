@@ -24,4 +24,4 @@ acquire:
           - slugify-after-slash
   language: kmr_Latn
   min_lang_confidence: 0.60
-  output_dir: data/acquire
+  output_dir: dataset/acquire

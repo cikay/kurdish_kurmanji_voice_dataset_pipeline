@@ -131,16 +131,16 @@ class AcquireStage:
                     fail += 1
                     continue
 
-                audio_path = audio_strategy.download(item, audio_dir, self.cookies_file)
-                if not audio_path:
-                    fail += 1
-                    continue
-
                 full_text = "\n".join(
                     part for part in [content["author"], content["title"], content["text"]] if part
                 )
                 text_path = text_dir / f"{item_id}.txt"
                 text_path.write_text(full_text, encoding="utf-8")
+
+                audio_path = audio_strategy.download(item, audio_dir, self.cookies_file)
+                if not audio_path:
+                    fail += 1
+                    continue
 
                 processed_ids.add(item_id)
                 print(f"  ✅ Saved: {audio_path.name} | {len(full_text)} chars")
