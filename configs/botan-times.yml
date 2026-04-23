@@ -22,6 +22,12 @@ acquire:
         endpoint_method: slugify-audio-name
         endpoint_method_fallbacks:
           - slugify-after-slash
+    - audio:
+        strategy: youtube_videos
+        urls:
+          https://www.youtube.com/watch?v=8_o_B68uOkU&t=645s
+      text:
+        strategy: video_of_audio_url
   language: kmr_Latn
   min_lang_confidence: 0.60
   output_dir: dataset/acquire

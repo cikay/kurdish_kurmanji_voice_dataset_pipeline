@@ -1,8 +1,8 @@
 """Entry point: reads a pipeline YAML config and runs each stage in order.
 
 Usage:
-    python -m kurdish_kurmanji_voice_dataset_pipeline.pipeline --config configs/botan-times.yml
-    python -m kurdish_kurmanji_voice_dataset_pipeline.pipeline --config configs/botan-times.yml --cookies cookies.txt
+    python -m kurdish_kurmanji_voice_dataset_pipeline.pipeline --config configs/config.yml
+    python -m kurdish_kurmanji_voice_dataset_pipeline.pipeline --config configs/config.yml --cookies cookies.txt
 """
 
 import argparse

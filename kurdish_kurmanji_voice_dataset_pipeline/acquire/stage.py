@@ -11,6 +11,7 @@ from .strategies.audio.base import AudioAcquireStrategy
 from .strategies.audio.youtube_playlist import YoutubePlaylistAudioStrategy
 from .strategies.audio.youtube_videos import YoutubeVideosAudioStrategy
 from .strategies.text.base import TextAcquireStrategy
+from .strategies.text.video_of_audio_url import VideoOfAudioUrlTextStrategy
 from .strategies.text.web_scrape import WebScrapeTextStrategy
 
 
@@ -33,6 +34,7 @@ class AcquireStage:
 
     _TEXT_REGISTRY: dict[str, type[TextAcquireStrategy]] = {
         "web_scrape": WebScrapeTextStrategy,
+        "video_of_audio_url": VideoOfAudioUrlTextStrategy,
     }
 
     def __init__(self, cfg: dict, cookies_file: Path | None = None) -> None:
