@@ -27,6 +27,13 @@ acquire:
         base_url: https://example.com/
         endpoint_method: slugify-audio-name
 
+    - audio:
+        strategy: youtube_videos
+        urls:
+          - https://www.youtube.com/watch?v=...
+      text:
+        strategy: video_of_audio_url          # OCR text pages displayed in the video
+
   output_dir: data/acquire
   language: kmr_Latn          # FastText language code — prefix-matched (kmr matches kmr_Latn, kmr_Arab)
   min_lang_confidence: 0.60   # Optional, defaults to 0.60
@@ -44,6 +51,7 @@ acquire:
 | Strategy | Config keys | Description |
 |----------|------------|-------------|
 | `web_scrape` | `base_url`, `endpoint_method`, `endpoint_method_fallbacks` (optional) | Scrapes article text via [trafilatura](https://trafilatura.readthedocs.io) |
+| `video_of_audio_url` | _(none)_ | Extracts on-screen text from the audio item's YouTube video using frame-by-frame OCR (PaddleOCR). Use when the audio source is a video that displays its transcript as text pages. Requires the audio strategy to provide a `url` field on each item (e.g. `youtube_videos`). |
 
 ### Endpoint methods
 

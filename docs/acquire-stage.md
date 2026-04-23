@@ -5,8 +5,8 @@
 For each source the stage:
 
 1. Fetches item metadata (cached to `items_cache_<source_id>.json` after first run)
-2. Skips items whose `video_id` was already processed by an earlier source (cross-playlist deduplication)
-3. Scrapes the matching article text
+2. Skips items whose `id` was already processed by an earlier source (cross-source deduplication)
+3. Fetches text using the configured text strategy (web scrape, video OCR, etc.)
 4. Validates language with [fastText](https://fasttext.cc/docs/en/language-identification.html) using the `language` and `min_lang_confidence` values from config
 5. Downloads audio via `yt-dlp`, converts to **16kHz mono WAV** via `ffmpeg`
 6. Saves the text file and appends a record to `metadata_<source_id>.jsonl`

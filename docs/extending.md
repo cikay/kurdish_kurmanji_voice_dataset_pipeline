@@ -5,6 +5,9 @@
 1. Create `acquire/strategies/text/<name>.py` implementing `TextAcquireStrategy`:
    - `from_config(cls, cfg) -> Self` — instantiate from the YAML config block
    - `fetch(self, hint) -> dict | None` — return `{title, author, text, source_url}` or `None`
+
+   The `hint` dict contains at minimum `id` and `title` from the audio strategy. Some audio strategies provide extra fields (e.g. `youtube_videos` also provides `url`) that text strategies can use — see `video_of_audio_url` for an example.
+
 2. Add `"<name>": YourClass` to `_TEXT_REGISTRY` in `acquire/stage.py`
 
 ## Adding a new audio strategy
