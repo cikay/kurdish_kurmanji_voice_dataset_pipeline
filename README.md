@@ -14,7 +14,7 @@ The pipeline is config-driven. Each YAML config file defines a set of stages and
 
 ```
 configs/
-  botan-times.yml                  # Pipeline config for botantimes.com
+  config.yml                  # Pipeline config
 
 kurdish_kurmanji_voice_dataset_pipeline/
   pipeline.py                      # Entry point — reads YAML, runs stages
@@ -54,11 +54,11 @@ pipenv install
 **Run a pipeline config:**
 ```bash
 pipenv run python -m kurdish_kurmanji_voice_dataset_pipeline.pipeline \
-  --config configs/botan-times.yml
+  --config configs/config.yml
 
 # With YouTube cookies (needed if playlist is age-restricted):
 pipenv run python -m kurdish_kurmanji_voice_dataset_pipeline.pipeline \
-  --config configs/botan-times.yml \
+  --config configs/config.yml \
   --cookies cookies.txt
 ```
 
