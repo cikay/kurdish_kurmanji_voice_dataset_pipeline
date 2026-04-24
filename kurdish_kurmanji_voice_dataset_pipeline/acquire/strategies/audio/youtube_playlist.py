@@ -28,8 +28,6 @@ class YoutubePlaylistAudioStrategy(AudioAcquireStrategy):
     @classmethod
     def from_config(cls, cfg: dict) -> "YoutubePlaylistAudioStrategy":
         urls = cfg["playlist_urls"]
-        if isinstance(urls, str):
-            urls = [urls]
         return cls(playlist_urls=urls)
 
     @property
