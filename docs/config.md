@@ -10,7 +10,9 @@ acquire:
   sources:
     - audio:
         strategy: youtube_playlist
-        playlist_url: https://www.youtube.com/playlist?list=...
+        playlist_urls:                             # one or more playlist URLs
+          - https://www.youtube.com/playlist?list=...
+          - https://www.youtube.com/playlist?list=...
       text:
         strategy: web_scrape
         base_url: https://example.com/
@@ -43,7 +45,7 @@ acquire:
 
 | Strategy | Config keys | Description |
 |----------|------------|-------------|
-| `youtube_playlist` | `playlist_url` | All videos from a YouTube playlist |
+| `youtube_playlist` | `playlist_urls` (list) | All videos from one or more YouTube playlists; duplicates across playlists are skipped |
 | `youtube_videos` | `urls` (list) | Explicit YouTube video URLs; pass a single-item list for one video |
 
 ## Text strategies
