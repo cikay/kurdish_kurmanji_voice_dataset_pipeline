@@ -69,5 +69,5 @@ acquire:
 `configs/debug.yml` is a minimal config with one source per strategy type and single items each. Output goes to `dataset/debug` so it does not touch the real dataset.
 
 ```bash
-python -m kurdish_kurmanji_voice_dataset_pipeline --config configs/debug.yml
+python -m kurdish_kurmanji_voice_dataset_pipeline.pipeline --config configs/debug.yml
 ```
