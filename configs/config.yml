@@ -33,6 +33,7 @@ acquire:
           - https://www.youtube.com/watch?v=LGjxfuSOP_4
           - https://www.youtube.com/watch?v=qvMFHEP0Ej4
           - https://www.youtube.com/watch?v=IWFizuhht0s
+          - https://www.youtube.com/watch?v=qQoZ5SEdJL8
       text:
         strategy: video_of_audio_url
     - audio:
