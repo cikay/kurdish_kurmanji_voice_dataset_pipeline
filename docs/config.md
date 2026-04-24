@@ -63,3 +63,11 @@ acquire:
 ### Fallback chain
 
 `endpoint_method_fallbacks` is an ordered list tried only when the primary returns no content. A fallback whose URL cannot be built (e.g. `slugify-after-slash` with no ` / ` in the title) is silently skipped with a log message.
+
+## Debugging and testing
+
+`configs/debug.yml` is a minimal config with one source per strategy type and single items each. Output goes to `dataset/debug` so it does not touch the real dataset.
+
+```bash
+python -m kurdish_kurmanji_voice_dataset_pipeline --config configs/debug.yml
+```
