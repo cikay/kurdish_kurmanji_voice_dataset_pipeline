@@ -5,17 +5,9 @@ acquire:
   sources:
     - audio:
         strategy: youtube_playlist
-        playlist_url: https://www.youtube.com/playlist?list=PLXRqvgEq6VESn7sQzzmaXp_r3H6stjri6
-      text:
-        strategy: web_scrape
-        base_url: https://botantimes.com/
-        endpoint_method: slugify-audio-name
-        endpoint_method_fallbacks:
-          - slugify-after-slash
-
-    - audio:
-        strategy: youtube_playlist
-        playlist_url: https://www.youtube.com/playlist?list=PLXRqvgEq6VES-ln2uCIXKzgmWpJ_jLSQV
+        playlist_urls:
+          - https://www.youtube.com/playlist?list=PLXRqvgEq6VESn7sQzzmaXp_r3H6stjri6
+          - https://www.youtube.com/playlist?list=PLXRqvgEq6VES-ln2uCIXKzgmWpJ_jLSQV
       text:
         strategy: web_scrape
         base_url: https://botantimes.com/
@@ -25,27 +17,31 @@ acquire:
     - audio:
         strategy: youtube_videos
         urls:
-          https://www.youtube.com/watch?v=8_o_B68uOkU
-          https://www.youtube.com/watch?v=z3Iur6OAYrQ
-          https://www.youtube.com/watch?v=yqSfzVw3OiA
-          https://www.youtube.com/watch?v=OYyxPPj-_p8
-          https://www.youtube.com/watch?v=DzK1w3RKlho
-          https://www.youtube.com/watch?v=Hc4KtqfffcQ
-          https://www.youtube.com/watch?v=lYx_1uWqY6k
-          https://www.youtube.com/watch?v=ktCugxob3u8
-          https://www.youtube.com/watch?v=nlYv9WtQR0U
-          https://www.youtube.com/watch?v=JKxClvIs8KY
-          https://www.youtube.com/watch?v=asge5dAkV98
-          https://www.youtube.com/watch?v=lNx3S0p1beA
-          https://www.youtube.com/watch?v=JKxClvIs8KY
-          https://www.youtube.com/watch?v=LGjxfuSOP_4
-          https://www.youtube.com/watch?v=qvMFHEP0Ej4
-          https://www.youtube.com/watch?v=IWFizuhht0s
+          - https://www.youtube.com/watch?v=8_o_B68uOkU
+          - https://www.youtube.com/watch?v=z3Iur6OAYrQ
+          - https://www.youtube.com/watch?v=yqSfzVw3OiA
+          - https://www.youtube.com/watch?v=OYyxPPj-_p8
+          - https://www.youtube.com/watch?v=DzK1w3RKlho
+          - https://www.youtube.com/watch?v=Hc4KtqfffcQ
+          - https://www.youtube.com/watch?v=lYx_1uWqY6k
+          - https://www.youtube.com/watch?v=ktCugxob3u8
+          - https://www.youtube.com/watch?v=nlYv9WtQR0U
+          - https://www.youtube.com/watch?v=JKxClvIs8KY
+          - https://www.youtube.com/watch?v=asge5dAkV98
+          - https://www.youtube.com/watch?v=lNx3S0p1beA
+          - https://www.youtube.com/watch?v=JKxClvIs8KY
+          - https://www.youtube.com/watch?v=LGjxfuSOP_4
+          - https://www.youtube.com/watch?v=qvMFHEP0Ej4
+          - https://www.youtube.com/watch?v=IWFizuhht0s
       text:
         strategy: video_of_audio_url
     - audio:
         strategy: youtube_playlist
-        playlist_url: https://www.youtube.com/playlist?list=PLSbJlfz5n77JDzRQhzdWr2pWEs3ISWr6l
+        playlist_urls:
+          - https://www.youtube.com/playlist?list=PLSbJlfz5n77JDzRQhzdWr2pWEs3ISWr6l
+          - https://www.youtube.com/playlist?list=PL_By6T4wLe9VUGyOMjq3PKCMmEe4bHE5_
+          - https://www.youtube.com/playlist?list=PLxnwijnBYSP7XQFF1goxZCX6LZfa6qbrF
+          - https://www.youtube.com/playlist?list=PLxnwijnBYSP57mvU5-xTYyo97LlXtIviz
       text:
         strategy: video_of_audio_url
   language: kmr_Latn

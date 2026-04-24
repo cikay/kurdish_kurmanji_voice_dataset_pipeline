@@ -1,3 +1,4 @@
+import hashlib
 import json
 import re
 from pathlib import Path
@@ -15,14 +16,19 @@ def _extract_playlist_id(url: str) -> str:
 
 
 class YoutubePlaylistAudioStrategy(AudioAcquireStrategy):
-    def __init__(self, playlist_url: str) -> None:
-        self.playlist_url = playlist_url
-        self._source_id = _extract_playlist_id(playlist_url)
+    def __init__(self, playlist_urls: list[str]) -> None:
+        self.playlist_urls = playlist_urls
         self._downloader = YoutubeVideoDownloader()
+        if len(playlist_urls) == 1:
+            self._source_id = _extract_playlist_id(playlist_urls[0])
+        else:
+            digest = hashlib.sha256(" ".join(sorted(playlist_urls)).encode()).hexdigest()[:12]
+            self._source_id = f"youtube_playlists_{digest}"
 
     @classmethod
     def from_config(cls, cfg: dict) -> "YoutubePlaylistAudioStrategy":
-        return cls(playlist_url=cfg["playlist_url"])
+        urls = cfg["playlist_urls"]
+        return cls(playlist_urls=urls)
 
     @property
     def source_id(self) -> str:
@@ -34,7 +40,6 @@ class YoutubePlaylistAudioStrategy(AudioAcquireStrategy):
             print(f"  📋 Loaded {len(videos)} items from cache: {cache_path}")
             return videos
 
-        print(f"  🔍 Fetching playlist metadata: {self.playlist_url}")
         ydl_opts = {
             "quiet": True,
             "no_warnings": True,
@@ -44,28 +49,33 @@ class YoutubePlaylistAudioStrategy(AudioAcquireStrategy):
             "cachedir": False,
         }
 
-        try:
-            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-                info = ydl.extract_info(self.playlist_url, download=False)
-        except Exception as e:
-            print(f"  ❌ Playlist fetch error: {e}")
-            return []
+        seen: set[str] = set()
+        videos: list[dict] = []
 
-        videos = []
-        for entry in info.get("entries") or []:
-            if not entry:
+        for playlist_url in self.playlist_urls:
+            print(f"  🔍 Fetching playlist metadata: {playlist_url}")
+            try:
+                with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                    info = ydl.extract_info(playlist_url, download=False)
+            except Exception as e:
+                print(f"  ❌ Playlist fetch error: {e}")
                 continue
-            video_id = entry.get("id") or entry.get("url")
-            title = entry.get("title")
-            if not video_id or not title:
-                continue
-            videos.append({
-                "id": video_id,
-                "title": title,
-                "url": f"https://www.youtube.com/watch?v={video_id}",
-            })
 
-        print(f"  ✅ Found {len(videos)} videos")
+            for entry in info.get("entries") or []:
+                if not entry:
+                    continue
+                video_id = entry.get("id") or entry.get("url")
+                title = entry.get("title")
+                if not video_id or not title or video_id in seen:
+                    continue
+                seen.add(video_id)
+                videos.append({
+                    "id": video_id,
+                    "title": title,
+                    "url": f"https://www.youtube.com/watch?v={video_id}",
+                })
+
+        print(f"  ✅ Found {len(videos)} videos across {len(self.playlist_urls)} playlist(s)")
         cache_path.parent.mkdir(parents=True, exist_ok=True)
         cache_path.write_text(
             json.dumps(videos, ensure_ascii=False, indent=2), encoding="utf-8"

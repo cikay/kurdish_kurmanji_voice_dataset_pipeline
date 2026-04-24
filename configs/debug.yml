@@ -6,7 +6,8 @@ acquire:
     # web_scrape — single playlist item
     - audio:
         strategy: youtube_playlist
-        playlist_url: https://www.youtube.com/playlist?list=PLXRqvgEq6VESn7sQzzmaXp_r3H6stjri6
+        playlist_urls:
+          https://www.youtube.com/playlist?list=PLXRqvgEq6VESn7sQzzmaXp_r3H6stjri6
       text:
         strategy: web_scrape
         base_url: https://botantimes.com/
