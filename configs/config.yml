@@ -39,6 +39,9 @@ acquire:
         strategy: youtube_playlist
         playlist_urls:
           - https://www.youtube.com/playlist?list=PLSbJlfz5n77JDzRQhzdWr2pWEs3ISWr6l
+          - https://www.youtube.com/playlist?list=PL_By6T4wLe9VUGyOMjq3PKCMmEe4bHE5_
+          - https://www.youtube.com/playlist?list=PLxnwijnBYSP7XQFF1goxZCX6LZfa6qbrF
+          - https://www.youtube.com/playlist?list=PLxnwijnBYSP57mvU5-xTYyo97LlXtIviz
       text:
         strategy: video_of_audio_url
   language: kmr_Latn
